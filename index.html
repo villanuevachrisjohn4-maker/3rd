@@ -181,7 +181,7 @@ body {
 
   <div class="letter-wrapper">
     <div class="letter">
-      <h1>💗 Monthsary</h1>
+      <h1>To My Favorite Person 💗</h1>
 
       <p>Three months may not seem like a long time, but to me, it already feels like we’ve built something really special.</p>
 
@@ -220,3 +220,4 @@ setInterval(() => {
 
 </body>
 </html>
+
