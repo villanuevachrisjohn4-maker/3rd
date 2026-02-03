@@ -26,7 +26,6 @@ body {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  position: relative;
 }
 
 /* ================= ENVELOPE ================= */
@@ -37,13 +36,14 @@ body {
   cursor: pointer;
 }
 
-/* Envelope visuals only */
-.envelope-graphics {
+/* Hide overflow so letter stays inside */
+.envelope-inner {
   position: absolute;
   inset: 0;
-  transition: opacity 1.2s ease;
+  overflow: hidden;
 }
 
+/* Envelope body */
 .envelope-back {
   position: absolute;
   inset: 0;
@@ -57,7 +57,7 @@ body {
   inset: 0;
   background: #f7b7c8;
   clip-path: polygon(0 0, 100% 0, 50% 55%);
-  z-index: 3;
+  z-index: 4;
 }
 
 .envelope-flap {
@@ -67,7 +67,7 @@ body {
   clip-path: polygon(0 0, 100% 0, 50% 60%);
   transform-origin: top;
   transition: transform 1s ease;
-  z-index: 4;
+  z-index: 5;
 }
 
 .heart-seal {
@@ -76,17 +76,17 @@ body {
   left: 50%;
   transform: translate(-50%, -50%);
   font-size: 26px;
-  z-index: 5;
+  z-index: 6;
 }
 
 /* ================= LETTER ================= */
 .letter-wrapper {
   position: absolute;
   left: 50%;
-  top: 50%;
-  transform: translate(-50%, 120px);
-  transition: transform 1.4s ease;
-  z-index: 10;
+  bottom: -260px; /* hidden inside */
+  transform: translateX(-50%);
+  transition: bottom 1.4s ease;
+  z-index: 2;
 }
 
 .letter {
@@ -122,18 +122,13 @@ body {
   margin-bottom: 18px;
 }
 
-/* ================= OPEN STATES ================= */
+/* ================= OPEN STATE ================= */
 .envelope.open .envelope-flap {
   transform: rotateX(-180deg);
 }
 
-.envelope.open ~ .letter-wrapper {
-  transform: translate(-50%, -220px);
-}
-
-.envelope.fade .envelope-graphics {
-  opacity: 0;
-  pointer-events: none;
+.envelope.open .letter-wrapper {
+  bottom: -40px; /* visible but still inside */
 }
 
 /* ================= FLOATING HEARTS ================= */
@@ -155,30 +150,30 @@ body {
 <body>
 
 <div class="container">
-
   <div class="envelope" id="envelope">
-    <div class="envelope-graphics">
-      <div class="envelope-back"></div>
-      <div class="envelope-front"></div>
-      <div class="envelope-flap"></div>
-      <div class="heart-seal">❤️</div>
+
+    <div class="envelope-inner">
+      <div class="letter-wrapper">
+        <div class="letter">
+          <h1>💗 Monthsary</h1>
+
+          <p>Three months may not seem like a long time, but to me, it already feels like we’ve built something really special.</p>
+
+          <p>In just a short time, you’ve become someone I look forward to every day — someone who makes my ordinary moments feel brighter and my heavy days feel lighter.</p>
+
+          <p>Thank you for being patient with me, for understanding me, and for choosing me even when things aren’t perfect.</p>
+
+          <p>If this is just the beginning, then I can’t wait to see how much more we’ll grow together. I choose you now and forever. ❤️</p>
+        </div>
+      </div>
     </div>
+
+    <div class="envelope-back"></div>
+    <div class="envelope-front"></div>
+    <div class="envelope-flap"></div>
+    <div class="heart-seal">❤️</div>
+
   </div>
-
-  <div class="letter-wrapper">
-    <div class="letter">
-      <h1>💗 Monthsary</h1>
-
-      <p>Three months may not seem like a long time, but to me, it already feels like we’ve built something really special.</p>
-
-      <p>In just a short time, you’ve become someone I look forward to every day someone who makes my ordinary moments feel brighter and my heavy days feel lighter.</p>
-
-      <p>Thank you for being patient with me, for understanding me, and for choosing me even when things aren’t perfect.</p>
-
-      <p>If this is just the beginning, then I can’t wait to see how much more we’ll grow together. I choose you now and forever. ❤️</p>
-    </div>
-  </div>
-
 </div>
 
 <div id="hearts"></div>
@@ -190,12 +185,7 @@ let opened = false;
 envelope.addEventListener("click", () => {
   if (opened) return;
   opened = true;
-
   envelope.classList.add("open");
-
-  setTimeout(() => {
-    envelope.classList.add("fade");
-  }, 1600);
 });
 
 /* Floating hearts */
