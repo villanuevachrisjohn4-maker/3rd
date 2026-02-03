@@ -26,24 +26,26 @@ body {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
+  position: relative;
 }
 
 /* ================= ENVELOPE ================= */
 .envelope {
   width: 320px;
   height: 220px;
-  position: relative;
+  position: absolute;
   cursor: pointer;
+  transition: opacity 1.2s ease;
+  z-index: 5;
 }
 
-/* Hide overflow so letter stays inside */
 .envelope-inner {
   position: absolute;
   inset: 0;
   overflow: hidden;
 }
 
-/* Envelope body */
+/* Envelope parts */
 .envelope-back {
   position: absolute;
   inset: 0;
@@ -67,7 +69,7 @@ body {
   clip-path: polygon(0 0, 100% 0, 50% 60%);
   transform-origin: top;
   transition: transform 1s ease;
-  z-index: 5;
+  z-index: 6;
 }
 
 .heart-seal {
@@ -76,25 +78,23 @@ body {
   left: 50%;
   transform: translate(-50%, -50%);
   font-size: 26px;
-  z-index: 6;
+  z-index: 7;
 }
 
 /* ================= LETTER ================= */
 .letter-wrapper {
-  position: absolute;
-  left: 50%;
-  bottom: -260px; /* hidden inside */
-  transform: translateX(-50%);
-  transition: bottom 1.4s ease;
-  z-index: 2;
+  position: relative;
+  z-index: 3;
+  transform: translateY(40px);
+  transition: transform 1.4s ease;
 }
 
 .letter {
-  width: 300px;
-  max-height: 360px;
-  padding: 28px 24px;
+  width: 320px;
+  max-height: 380px;
+  padding: 30px 26px;
   background:
-    linear-gradient(180deg, rgba(255,255,255,0.95), rgba(255,235,242,0.98)),
+    linear-gradient(180deg, rgba(255,255,255,0.96), rgba(255,235,242,0.98)),
     repeating-linear-gradient(
       to bottom,
       rgba(0,0,0,0.03),
@@ -102,10 +102,19 @@ body {
       transparent 1px,
       transparent 4px
     );
-  border-radius: 18px;
+  border-radius: 20px;
   border: 2px solid #f2a7ba;
-  box-shadow: 0 18px 35px rgba(231, 84, 128, 0.35);
+  box-shadow: 0 20px 40px rgba(231, 84, 128, 0.35);
   overflow-y: auto;
+}
+
+/* Soft scrollbar */
+.letter::-webkit-scrollbar {
+  width: 6px;
+}
+.letter::-webkit-scrollbar-thumb {
+  background: #e48aa2;
+  border-radius: 10px;
 }
 
 .letter h1 {
@@ -122,13 +131,18 @@ body {
   margin-bottom: 18px;
 }
 
-/* ================= OPEN STATE ================= */
+/* ================= OPEN STATES ================= */
 .envelope.open .envelope-flap {
   transform: rotateX(-180deg);
 }
 
-.envelope.open .letter-wrapper {
-  bottom: -40px; /* visible but still inside */
+.envelope.open {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.envelope.open ~ .letter-wrapper {
+  transform: translateY(0);
 }
 
 /* ================= FLOATING HEARTS ================= */
@@ -150,30 +164,30 @@ body {
 <body>
 
 <div class="container">
+
   <div class="envelope" id="envelope">
-
     <div class="envelope-inner">
-      <div class="letter-wrapper">
-        <div class="letter">
-          <h1>💗 Monthsary</h1>
-
-          <p>Three months may not seem like a long time, but to me, it already feels like we’ve built something really special.</p>
-
-          <p>In just a short time, you’ve become someone I look forward to every day — someone who makes my ordinary moments feel brighter and my heavy days feel lighter.</p>
-
-          <p>Thank you for being patient with me, for understanding me, and for choosing me even when things aren’t perfect.</p>
-
-          <p>If this is just the beginning, then I can’t wait to see how much more we’ll grow together. I choose you now and forever. ❤️</p>
-        </div>
-      </div>
+      <div class="envelope-back"></div>
+      <div class="envelope-front"></div>
+      <div class="envelope-flap"></div>
+      <div class="heart-seal">❤️</div>
     </div>
-
-    <div class="envelope-back"></div>
-    <div class="envelope-front"></div>
-    <div class="envelope-flap"></div>
-    <div class="heart-seal">❤️</div>
-
   </div>
+
+  <div class="letter-wrapper">
+    <div class="letter">
+      <h1>💗 Monthsary</h1>
+
+      <p>Three months may not seem like a long time, but to me, it already feels like we’ve built something really special.</p>
+
+      <p>In just a short time, you’ve become someone I look forward to every day — someone who makes my ordinary moments feel brighter and my heavy days feel lighter.</p>
+
+      <p>Thank you for being patient with me, for understanding me, and for choosing me even when things aren’t perfect.</p>
+
+      <p>If this is just the beginning, then I can’t wait to see how much more we’ll grow together. I choose you now and forever. ❤️</p>
+    </div>
+  </div>
+
 </div>
 
 <div id="hearts"></div>
