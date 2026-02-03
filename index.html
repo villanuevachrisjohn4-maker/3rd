@@ -33,7 +33,7 @@ body {
 .envelope {
   width: 320px;
   height: 220px;
-  position: absolute;
+  position: relative;
   cursor: pointer;
   transition: opacity 1.2s ease;
   z-index: 5;
@@ -83,10 +83,13 @@ body {
 
 /* ================= LETTER ================= */
 .letter-wrapper {
-  position: relative;
-  z-index: 3;
-  transform: translateY(40px);
-  transition: transform 1.4s ease;
+  position: absolute;
+  top: 0;
+  z-index: 2;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(60px);
+  transition: opacity 1s ease, transform 1.4s ease;
 }
 
 .letter {
@@ -108,7 +111,7 @@ body {
   overflow-y: auto;
 }
 
-/* Soft scrollbar */
+/* Scrollbar */
 .letter::-webkit-scrollbar {
   width: 6px;
 }
@@ -141,8 +144,10 @@ body {
   pointer-events: none;
 }
 
-.envelope.open ~ .letter-wrapper {
-  transform: translateY(0);
+.envelope.open + .letter-wrapper {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(-10px);
 }
 
 /* ================= FLOATING HEARTS ================= */
