@@ -1,2 +1,224 @@
-# 3rd
-Monthsary
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Happy 3rd Monthsary ❤️</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Georgia, serif;
+}
+
+body {
+  background: linear-gradient(135deg, #ffd1dc, #ffe6eb);
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+/* ENVELOPE */
+.envelope {
+  width: 320px;
+  height: 220px;
+  position: relative;
+  cursor: pointer;
+  perspective: 1000px;
+}
+
+.envelope-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: #f4a7b9;
+  border-radius: 6px;
+  z-index: 1;
+}
+
+.envelope-front {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: #f7b7c8;
+  clip-path: polygon(0 0, 100% 0, 50% 55%);
+  z-index: 4;
+}
+
+.envelope-flap {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: #f09fb2;
+  clip-path: polygon(0 0, 100% 0, 50% 60%);
+  transform-origin: top;
+  transition: transform 1s ease;
+  z-index: 5;
+}
+
+.heart-seal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 26px;
+  z-index: 6;
+}
+
+/* CARD */
+.card-wrapper {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  transform: translateY(40px);
+  transition: transform 1s ease;
+  z-index: 2;
+}
+
+.card {
+  background: white;
+  padding: 20px;
+  border-radius: 6px;
+  text-align: center;
+}
+
+.card h1 {
+  font-size: 26px;
+  margin-bottom: 10px;
+}
+
+.card h1 span {
+  font-size: 20px;
+  color: #e75480;
+}
+
+.card-body {
+  font-size: 14px;
+  line-height: 1.6;
+  text-align: left;
+  margin-top: 10px;
+  min-height: 120px;
+}
+
+/* OPEN STATE */
+.envelope.open .envelope-flap {
+  transform: rotateX(-180deg);
+}
+
+.envelope.open .card-wrapper {
+  transform: translateY(-140px);
+}
+
+/* CURSOR */
+.type-cursor::after {
+  content: "|";
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  50% { opacity: 0; }
+}
+
+/* FLOATING HEARTS */
+#hearts span {
+  position: fixed;
+  bottom: -20px;
+  animation: float 6s linear forwards;
+}
+
+@keyframes float {
+  0% { transform: translateY(0); opacity: 1; }
+  100% { transform: translateY(-120vh); opacity: 0; }
+}
+</style>
+</head>
+
+<body>
+
+<audio id="bg-music" loop>
+  <source src="music.mp3" type="audio/mpeg">
+</audio>
+
+<div class="container">
+  <div class="envelope" id="envelope">
+    <div class="envelope-back"></div>
+
+    <div class="card-wrapper">
+      <div class="card">
+        <h1>3rd<br><span>Monthsary</span></h1>
+        <div class="card-body" id="typed-text" data-text="
+Three months may not seem like a long time, but to me, it already feels like we’ve built something really special.
+
+In just a short time, you’ve become someone I look forward to every day—someone who makes my ordinary moments feel brighter and my heavy days feel lighter.
+
+Thank you for being patient with me, for understanding me, and for choosing me even when things aren’t perfect.
+
+If this is just the beginning, then I can’t wait to see how much more we’ll grow together. I choose you now and forever. ❤️
+"></div>
+      </div>
+    </div>
+
+    <div class="envelope-front"></div>
+    <div class="envelope-flap"></div>
+    <div class="heart-seal">❤️</div>
+  </div>
+</div>
+
+<div id="hearts"></div>
+
+<script>
+const envelope = document.getElementById("envelope");
+const music = document.getElementById("bg-music");
+const textBox = document.getElementById("typed-text");
+let opened = false;
+
+envelope.addEventListener("click", () => {
+  if (opened) return;
+  opened = true;
+  envelope.classList.add("open");
+  music.volume = 0.6;
+  music.play();
+  setTimeout(startTyping, 900);
+});
+
+function startTyping() {
+  const fullText = textBox.dataset.text.trim();
+  textBox.innerHTML = "";
+  textBox.classList.add("type-cursor");
+  let i = 0;
+
+  function type() {
+    if (i < fullText.length) {
+      textBox.innerHTML += fullText[i] === "\n" ? "<br><br>" : fullText[i];
+      i++;
+      setTimeout(type, 28);
+    } else {
+      textBox.classList.remove("type-cursor");
+    }
+  }
+  type();
+}
+
+const hearts = document.getElementById("hearts");
+setInterval(() => {
+  const h = document.createElement("span");
+  h.innerHTML = "❤️";
+  h.style.left = Math.random() * 100 + "vw";
+  h.style.fontSize = Math.random() * 10 + 14 + "px";
+  hearts.appendChild(h);
+  setTimeout(() => h.remove(), 6000);
+}, 700);
+</script>
+
+</body>
+</html>
