@@ -16,7 +16,7 @@
 body {
   background: #ffdbe5;
   min-height: 100vh;
-  overflow-x: hidden; /* allow vertical growth */
+  overflow-x: hidden;
 }
 
 /* CENTER */
@@ -25,6 +25,7 @@ body {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
+  padding-top: 120px;
 }
 
 /* ENVELOPE */
@@ -32,7 +33,6 @@ body {
   width: 320px;
   height: 220px;
   position: relative;
-  cursor: pointer;
 }
 
 /* Disable pointer blocking */
@@ -44,7 +44,7 @@ body {
   position: absolute;
   inset: 0;
   background: #f4a7b9;
-  border-radius: 12px;
+  border-radius: 14px;
   z-index: 1;
 }
 
@@ -56,7 +56,7 @@ body {
   clip-path: polygon(0 0, 100% 0, 50% 60%);
   transform-origin: top;
   transition: transform 1s ease, opacity 0.6s ease;
-  z-index: 4;
+  z-index: 2;
 }
 
 .envelope-front {
@@ -64,7 +64,7 @@ body {
   inset: 0;
   background: #f7b7c8;
   clip-path: polygon(0 0, 100% 0, 50% 55%);
-  z-index: 3;
+  z-index: 2;
 }
 
 .heart-seal {
@@ -73,29 +73,26 @@ body {
   left: 50%;
   transform: translate(-50%, -50%);
   font-size: 26px;
-  z-index: 5;
+  z-index: 3;
 }
 
-/* CARD */
+/* LETTER */
 .card-wrapper {
   position: absolute;
-  left: 0;
-  right: 0;
+  left: 50%;
   top: 0;
-  display: flex;
-  justify-content: center;
-  transform: translateY(40px);
-  transition: transform 1.2s ease;
-  z-index: 2;
+  transform: translate(-50%, 40px);
+  transition: transform 1.3s ease;
+  z-index: 10; /* ALWAYS ABOVE ENVELOPE */
 }
 
 .card {
-  width: 92%;
+  width: 300px;
   background: linear-gradient(180deg, #fff0f5, #ffe3ec);
   padding: 26px 24px;
-  border-radius: 16px;
+  border-radius: 18px;
   border: 2px solid #f2a7ba;
-  box-shadow: 0 12px 28px rgba(231, 84, 128, 0.25);
+  box-shadow: 0 18px 35px rgba(231, 84, 128, 0.3);
 }
 
 /* TITLE */
@@ -106,12 +103,11 @@ body {
   font-size: 22px;
 }
 
-/* LETTER TEXT */
+/* TEXT */
 .card-body {
   font-size: 15.5px;
   line-height: 1.9;
   color: #6b2d3e;
-  white-space: normal;
 }
 
 /* OPEN STATE */
@@ -121,7 +117,7 @@ body {
 }
 
 .envelope.open .card-wrapper {
-  transform: translateY(-140px); /* NOT too high */
+  transform: translate(-50%, -260px); /* FULLY CLEAR ENVELOPE */
 }
 
 /* CURSOR */
@@ -162,18 +158,6 @@ body {
     opacity: 0;
   }
 }
-
-/* MOBILE */
-@media (max-width: 480px) {
-  .card-body {
-    font-size: 14.5px;
-    line-height: 1.95;
-  }
-
-  .card h1 {
-    font-size: 20px;
-  }
-}
 </style>
 </head>
 
@@ -185,11 +169,10 @@ body {
 
 <div class="container">
   <div class="envelope" id="envelope">
-    <div class="envelope-back"></div>
 
     <div class="card-wrapper">
       <div class="card">
-        <h1>❤️ Monthsary</h1>
+        <h1>💗 Monthsary</h1>
         <div class="card-body" id="text" data-text="
 Three months may not seem like a long time, but to me, it already feels like we’ve built something really special.
 
@@ -202,9 +185,11 @@ If this is just the beginning, then I can’t wait to see how much more we’ll 
       </div>
     </div>
 
+    <div class="envelope-back"></div>
     <div class="envelope-front"></div>
     <div class="envelope-flap"></div>
     <div class="heart-seal">❤️</div>
+
   </div>
 </div>
 
@@ -225,7 +210,7 @@ let opened = false;
 
     envelope.classList.add("open");
     music.play().catch(()=>{});
-    setTimeout(typeText, 800);
+    setTimeout(typeText, 700);
   });
 });
 
