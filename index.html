@@ -19,6 +19,7 @@ body {
   overflow: hidden;
 }
 
+/* CENTER */
 .container {
   display: flex;
   justify-content: center;
@@ -37,26 +38,24 @@ body {
 
 .envelope-back {
   position: absolute;
-  width: 100%;
-  height: 100%;
+  inset: 0;
   background: #f4a7b9;
-  border-radius: 6px;
+  border-radius: 8px;
   z-index: 1;
 }
 
 .envelope-front {
   position: absolute;
-  width: 100%;
-  height: 100%;
+  inset: 0;
   background: #f7b7c8;
   clip-path: polygon(0 0, 100% 0, 50% 55%);
   z-index: 4;
+  transition: opacity 0.6s ease;
 }
 
 .envelope-flap {
   position: absolute;
-  width: 100%;
-  height: 100%;
+  inset: 0;
   background: #f09fb2;
   clip-path: polygon(0 0, 100% 0, 50% 60%);
   transform-origin: top;
@@ -77,24 +76,23 @@ body {
 .card-wrapper {
   position: absolute;
   width: 100%;
-  height: 100%;
   top: 0;
   left: 0;
-  transform: translateY(40px);
-  transition: transform 1s ease;
+  transform: translateY(60px);
+  transition: transform 1.2s ease;
   z-index: 2;
 }
 
 .card {
   background: white;
-  padding: 20px;
-  border-radius: 6px;
+  padding: 22px;
+  border-radius: 8px;
   text-align: center;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
 }
 
 .card h1 {
   font-size: 26px;
-  margin-bottom: 10px;
 }
 
 .card h1 span {
@@ -103,11 +101,11 @@ body {
 }
 
 .card-body {
+  margin-top: 12px;
   font-size: 14px;
-  line-height: 1.6;
+  line-height: 1.7;
   text-align: left;
-  margin-top: 10px;
-  min-height: 120px;
+  min-height: 240px;
 }
 
 /* OPEN STATE */
@@ -116,7 +114,11 @@ body {
 }
 
 .envelope.open .card-wrapper {
-  transform: translateY(-140px);
+  transform: translateY(-260px);
+}
+
+.envelope.open .envelope-front {
+  opacity: 0;
 }
 
 /* CURSOR */
@@ -129,7 +131,7 @@ body {
   50% { opacity: 0; }
 }
 
-/* FLOATING HEARTS */
+/* HEARTS */
 #hearts span {
   position: fixed;
   bottom: -20px;
@@ -137,8 +139,24 @@ body {
 }
 
 @keyframes float {
-  0% { transform: translateY(0); opacity: 1; }
-  100% { transform: translateY(-120vh); opacity: 0; }
+  from { transform: translateY(0); opacity: 1; }
+  to { transform: translateY(-120vh); opacity: 0; }
+}
+
+/* SPARKLES */
+#sparkles span {
+  position: fixed;
+  width: 6px;
+  height: 6px;
+  background: white;
+  border-radius: 50%;
+  opacity: 0.8;
+  animation: sparkle 2.5s linear forwards;
+}
+
+@keyframes sparkle {
+  0% { transform: scale(0); opacity: 1; }
+  100% { transform: scale(1.5) translateY(-120px); opacity: 0; }
 }
 </style>
 </head>
@@ -175,51 +193,8 @@ If this is just the beginning, then I can’t wait to see how much more we’ll 
 </div>
 
 <div id="hearts"></div>
+<div id="sparkles"></div>
 
 <script>
 const envelope = document.getElementById("envelope");
-const music = document.getElementById("bg-music");
-const textBox = document.getElementById("typed-text");
-let opened = false;
-
-envelope.addEventListener("click", () => {
-  if (opened) return;
-  opened = true;
-  envelope.classList.add("open");
-  music.volume = 0.6;
-  music.play();
-  setTimeout(startTyping, 900);
-});
-
-function startTyping() {
-  const fullText = textBox.dataset.text.trim();
-  textBox.innerHTML = "";
-  textBox.classList.add("type-cursor");
-  let i = 0;
-
-  function type() {
-    if (i < fullText.length) {
-      textBox.innerHTML += fullText[i] === "\n" ? "<br><br>" : fullText[i];
-      i++;
-      setTimeout(type, 28);
-    } else {
-      textBox.classList.remove("type-cursor");
-    }
-  }
-  type();
-}
-
-const hearts = document.getElementById("hearts");
-setInterval(() => {
-  const h = document.createElement("span");
-  h.innerHTML = "❤️";
-  h.style.left = Math.random() * 100 + "vw";
-  h.style.fontSize = Math.random() * 10 + 14 + "px";
-  hearts.appendChild(h);
-  setTimeout(() => h.remove(), 6000);
-}, 700);
-</script>
-
-</body>
-</html>
-
+const music = document.getElementById("bg-m
