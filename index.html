@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<title>Happy 3rd Monthsary ❤️</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8">
+<title>Happy Monthsary ❤️</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
 * {
@@ -14,7 +14,7 @@
 }
 
 body {
-  background: linear-gradient(135deg, #ffd1dc, #ffe6eb);
+  background: #ffdbe5;
   min-height: 100vh;
   overflow: hidden;
 }
@@ -33,15 +33,30 @@ body {
   height: 220px;
   position: relative;
   cursor: pointer;
-  perspective: 1000px;
+}
+
+/* Disable pointer blocking */
+.envelope * {
+  pointer-events: none;
 }
 
 .envelope-back {
   position: absolute;
   inset: 0;
   background: #f4a7b9;
-  border-radius: 8px;
+  border-radius: 10px;
   z-index: 1;
+}
+
+/* FLAP */
+.envelope-flap {
+  position: absolute;
+  inset: 0;
+  background: #f09fb2;
+  clip-path: polygon(0 0, 100% 0, 50% 60%);
+  transform-origin: top;
+  transition: transform 1s ease, opacity 0.6s ease;
+  z-index: 4;
 }
 
 .envelope-front {
@@ -49,80 +64,61 @@ body {
   inset: 0;
   background: #f7b7c8;
   clip-path: polygon(0 0, 100% 0, 50% 55%);
-  z-index: 4;
-  transition: opacity 0.6s ease;
-}
-
-.envelope-flap {
-  position: absolute;
-  inset: 0;
-  background: #f09fb2;
-  clip-path: polygon(0 0, 100% 0, 50% 60%);
-  transform-origin: top;
-  transition: transform 1s ease;
-  z-index: 5;
+  z-index: 3;
 }
 
 .heart-seal {
   position: absolute;
-  top: 50%;
+  top: 48%;
   left: 50%;
   transform: translate(-50%, -50%);
   font-size: 26px;
-  z-index: 6;
+  z-index: 5;
 }
 
 /* CARD */
 .card-wrapper {
   position: absolute;
-  width: 100%;
-  top: 0;
-  left: 0;
-  transform: translateY(60px);
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  transform: translateY(50px);
   transition: transform 1.2s ease;
   z-index: 2;
 }
 
 .card {
+  width: 90%;
   background: white;
   padding: 22px;
-  border-radius: 8px;
-  text-align: center;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+  border-radius: 12px;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.2);
 }
 
 .card h1 {
-  font-size: 26px;
-}
-
-.card h1 span {
-  font-size: 20px;
+  text-align: center;
   color: #e75480;
+  margin-bottom: 10px;
 }
 
 .card-body {
-  margin-top: 12px;
   font-size: 14px;
   line-height: 1.7;
-  text-align: left;
-  min-height: 240px;
+  min-height: 260px;
 }
 
 /* OPEN STATE */
 .envelope.open .envelope-flap {
   transform: rotateX(-180deg);
-}
-
-.envelope.open .card-wrapper {
-  transform: translateY(-260px);
-}
-
-.envelope.open .envelope-front {
   opacity: 0;
 }
 
+.envelope.open .card-wrapper {
+  transform: translateY(-280px);
+}
+
 /* CURSOR */
-.type-cursor::after {
+.type::after {
   content: "|";
   animation: blink 1s infinite;
 }
@@ -139,7 +135,6 @@ body {
 }
 
 @keyframes float {
-  from { transform: translateY(0); opacity: 1; }
   to { transform: translateY(-120vh); opacity: 0; }
 }
 
@@ -150,20 +145,21 @@ body {
   height: 6px;
   background: white;
   border-radius: 50%;
-  opacity: 0.8;
   animation: sparkle 2.5s linear forwards;
 }
 
 @keyframes sparkle {
-  0% { transform: scale(0); opacity: 1; }
-  100% { transform: scale(1.5) translateY(-120px); opacity: 0; }
+  to {
+    transform: translateY(-120px) scale(1.5);
+    opacity: 0;
+  }
 }
 </style>
 </head>
 
 <body>
 
-<audio id="bg-music" loop>
+<audio id="music" loop>
   <source src="music.mp3" type="audio/mpeg">
 </audio>
 
@@ -173,8 +169,8 @@ body {
 
     <div class="card-wrapper">
       <div class="card">
-        <h1>3rd<br><span>Monthsary</span></h1>
-        <div class="card-body" id="typed-text" data-text="
+        <h1>❤️ Monthsary</h1>
+        <div class="card-body" id="text" data-text="
 Three months may not seem like a long time, but to me, it already feels like we’ve built something really special.
 
 In just a short time, you’ve become someone I look forward to every day—someone who makes my ordinary moments feel brighter and my heavy days feel lighter.
@@ -197,4 +193,61 @@ If this is just the beginning, then I can’t wait to see how much more we’ll 
 
 <script>
 const envelope = document.getElementById("envelope");
-const music = document.getElementById("bg-m
+const textBox = document.getElementById("text");
+const music = document.getElementById("music");
+
+let opened = false;
+
+/* TAP ANYWHERE ON ENVELOPE */
+["click", "touchstart"].forEach(e => {
+  envelope.addEventListener(e, () => {
+    if (opened) return;
+    opened = true;
+
+    envelope.classList.add("open");
+    music.play().catch(()=>{});
+    setTimeout(typeText, 800);
+  });
+});
+
+/* TYPE EFFECT */
+function typeText() {
+  const text = textBox.dataset.text.trim();
+  textBox.innerHTML = "";
+  textBox.classList.add("type");
+
+  let i = 0;
+  function type() {
+    if (i < text.length) {
+      textBox.innerHTML += text[i] === "\n" ? "<br><br>" : text[i];
+      i++;
+      setTimeout(type, 28);
+    } else {
+      textBox.classList.remove("type");
+    }
+  }
+  type();
+}
+
+/* HEARTS */
+setInterval(() => {
+  const h = document.createElement("span");
+  h.innerHTML = "❤️";
+  h.style.left = Math.random() * 100 + "vw";
+  h.style.fontSize = Math.random() * 10 + 14 + "px";
+  document.getElementById("hearts").appendChild(h);
+  setTimeout(() => h.remove(), 6000);
+}, 700);
+
+/* SPARKLES */
+setInterval(() => {
+  const s = document.createElement("span");
+  s.style.left = Math.random() * 100 + "vw";
+  s.style.top = Math.random() * 100 + "vh";
+  document.getElementById("sparkles").appendChild(s);
+  setTimeout(() => s.remove(), 2500);
+}, 300);
+</script>
+
+</body>
+</html>
