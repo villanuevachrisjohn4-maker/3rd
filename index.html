@@ -16,7 +16,7 @@
 body {
   background: #ffdbe5;
   min-height: 100vh;
-  overflow: hidden;
+  overflow-x: hidden; /* allow vertical growth */
 }
 
 /* CENTER */
@@ -24,7 +24,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  min-height: 100vh;
 }
 
 /* ENVELOPE */
@@ -79,36 +79,39 @@ body {
 /* CARD */
 .card-wrapper {
   position: absolute;
-  inset: 0;
+  left: 0;
+  right: 0;
+  top: 0;
   display: flex;
   justify-content: center;
-  transform: translateY(50px);
+  transform: translateY(40px);
   transition: transform 1.2s ease;
   z-index: 2;
 }
 
 .card {
-  width: 90%;
+  width: 92%;
   background: linear-gradient(180deg, #fff0f5, #ffe3ec);
-  padding: 24px 22px;
-  border-radius: 14px;
+  padding: 26px 24px;
+  border-radius: 16px;
   border: 2px solid #f2a7ba;
-  box-shadow: 0 10px 25px rgba(231, 84, 128, 0.25);
+  box-shadow: 0 12px 28px rgba(231, 84, 128, 0.25);
 }
 
+/* TITLE */
 .card h1 {
   text-align: center;
   color: #d94a73;
-  margin-bottom: 14px;
+  margin-bottom: 16px;
   font-size: 22px;
 }
 
+/* LETTER TEXT */
 .card-body {
-  font-size: 15px;
-  line-height: 1.8;
+  font-size: 15.5px;
+  line-height: 1.9;
   color: #6b2d3e;
-  min-height: 260px;
-  word-wrap: break-word;
+  white-space: normal;
 }
 
 /* OPEN STATE */
@@ -118,7 +121,7 @@ body {
 }
 
 .envelope.open .card-wrapper {
-  transform: translateY(-280px);
+  transform: translateY(-140px); /* NOT too high */
 }
 
 /* CURSOR */
@@ -162,13 +165,9 @@ body {
 
 /* MOBILE */
 @media (max-width: 480px) {
-  .card {
-    padding: 20px 18px;
-  }
-
   .card-body {
     font-size: 14.5px;
-    line-height: 1.85;
+    line-height: 1.95;
   }
 
   .card h1 {
@@ -219,7 +218,6 @@ const music = document.getElementById("music");
 
 let opened = false;
 
-/* TAP ANYWHERE ON ENVELOPE */
 ["click", "touchstart"].forEach(e => {
   envelope.addEventListener(e, () => {
     if (opened) return;
@@ -231,7 +229,6 @@ let opened = false;
   });
 });
 
-/* TYPE EFFECT */
 function typeText() {
   const text = textBox.dataset.text.trim();
   textBox.innerHTML = "";
