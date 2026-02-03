@@ -2,21 +2,24 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Happy Monthsary ❤️</title>
+<title>Happy 3rd Monthsary ❤️</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Handwritten Font -->
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;600&display=swap" rel="stylesheet">
 
 <style>
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: Georgia, serif;
 }
 
 body {
   background: #ffdbe5;
   min-height: 100vh;
   overflow-x: hidden;
+  font-family: 'Dancing Script', cursive;
 }
 
 /* CENTER */
@@ -25,7 +28,6 @@ body {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  padding-top: 120px;
 }
 
 /* ENVELOPE */
@@ -33,30 +35,24 @@ body {
   width: 320px;
   height: 220px;
   position: relative;
+  cursor: pointer;
+  transition: opacity 1.2s ease;
 }
 
-/* Disable pointer blocking */
-.envelope * {
-  pointer-events: none;
+/* Hide overflow so letter starts INSIDE */
+.envelope-inner {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
 }
 
+/* Envelope parts */
 .envelope-back {
   position: absolute;
   inset: 0;
   background: #f4a7b9;
-  border-radius: 14px;
+  border-radius: 16px;
   z-index: 1;
-}
-
-/* FLAP */
-.envelope-flap {
-  position: absolute;
-  inset: 0;
-  background: #f09fb2;
-  clip-path: polygon(0 0, 100% 0, 50% 60%);
-  transform-origin: top;
-  transition: transform 1s ease, opacity 0.6s ease;
-  z-index: 2;
 }
 
 .envelope-front {
@@ -64,7 +60,17 @@ body {
   inset: 0;
   background: #f7b7c8;
   clip-path: polygon(0 0, 100% 0, 50% 55%);
-  z-index: 2;
+  z-index: 3;
+}
+
+.envelope-flap {
+  position: absolute;
+  inset: 0;
+  background: #f09fb2;
+  clip-path: polygon(0 0, 100% 0, 50% 60%);
+  transform-origin: top;
+  transition: transform 1s ease;
+  z-index: 4;
 }
 
 .heart-seal {
@@ -73,65 +79,78 @@ body {
   left: 50%;
   transform: translate(-50%, -50%);
   font-size: 26px;
-  z-index: 3;
+  z-index: 5;
 }
 
 /* LETTER */
-.card-wrapper {
+.letter-wrapper {
   position: absolute;
   left: 50%;
-  top: 0;
-  transform: translate(-50%, 40px);
-  transition: transform 1.3s ease;
-  z-index: 10; /* ALWAYS ABOVE ENVELOPE */
+  top: 100%;
+  transform: translate(-50%, 0);
+  transition: transform 1.4s ease;
+  z-index: 2;
 }
 
-.card {
+.letter {
   width: 300px;
-  background: linear-gradient(180deg, #fff0f5, #ffe3ec);
-  padding: 26px 24px;
+  max-height: 360px;
+  padding: 28px 24px;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.92), rgba(255,235,242,0.95)),
+    repeating-linear-gradient(
+      to bottom,
+      rgba(0,0,0,0.03),
+      rgba(0,0,0,0.03) 1px,
+      transparent 1px,
+      transparent 4px
+    );
   border-radius: 18px;
   border: 2px solid #f2a7ba;
   box-shadow: 0 18px 35px rgba(231, 84, 128, 0.3);
+  overflow-y: auto;
 }
 
-/* TITLE */
-.card h1 {
+/* Scrollbar soft look */
+.letter::-webkit-scrollbar {
+  width: 6px;
+}
+.letter::-webkit-scrollbar-thumb {
+  background: #e48aa2;
+  border-radius: 10px;
+}
+
+/* Title */
+.letter h1 {
   text-align: center;
   color: #d94a73;
-  margin-bottom: 16px;
-  font-size: 22px;
+  margin-bottom: 18px;
+  font-size: 26px;
 }
 
-/* TEXT */
-.card-body {
-  font-size: 15.5px;
-  line-height: 1.9;
+/* Text */
+.letter p {
+  font-size: 18px;
+  line-height: 2;
   color: #6b2d3e;
+  margin-bottom: 18px;
 }
 
-/* OPEN STATE */
+/* OPEN STATES */
 .envelope.open .envelope-flap {
   transform: rotateX(-180deg);
+}
+
+.envelope.open .letter-wrapper {
+  transform: translate(-50%, -340px);
+}
+
+.envelope.fade {
   opacity: 0;
+  pointer-events: none;
 }
 
-.envelope.open .card-wrapper {
-  transform: translate(-50%, -260px); /* FULLY CLEAR ENVELOPE */
-}
-
-/* CURSOR */
-.type::after {
-  content: " |";
-  color: #d94a73;
-  animation: blink 1s infinite;
-}
-
-@keyframes blink {
-  50% { opacity: 0; }
-}
-
-/* HEARTS */
+/* Floating hearts */
 #hearts span {
   position: fixed;
   bottom: -20px;
@@ -141,47 +160,27 @@ body {
 @keyframes float {
   to { transform: translateY(-120vh); opacity: 0; }
 }
-
-/* SPARKLES */
-#sparkles span {
-  position: fixed;
-  width: 6px;
-  height: 6px;
-  background: white;
-  border-radius: 50%;
-  animation: sparkle 2.5s linear forwards;
-}
-
-@keyframes sparkle {
-  to {
-    transform: translateY(-120px) scale(1.5);
-    opacity: 0;
-  }
-}
 </style>
 </head>
 
 <body>
 
-<audio id="music" loop>
-  <source src="music.mp3" type="audio/mpeg">
-</audio>
-
 <div class="container">
   <div class="envelope" id="envelope">
 
-    <div class="card-wrapper">
-      <div class="card">
-        <h1>💗 Monthsary</h1>
-        <div class="card-body" id="text" data-text="
-Three months may not seem like a long time, but to me, it already feels like we’ve built something really special.
+    <div class="envelope-inner">
+      <div class="letter-wrapper">
+        <div class="letter">
+          <h1>💗 Monthsary</h1>
 
-In just a short time, you’ve become someone I look forward to every day—someone who makes my ordinary moments feel brighter and my heavy days feel lighter.
+          <p>Three months may not seem like a long time, but to me, it already feels like we’ve built something really special.</p>
 
-Thank you for being patient with me, for understanding me, and for choosing me even when things aren’t perfect.
+          <p>In just a short time, you’ve become someone I look forward to every day someone who makes my ordinary moments feel brighter and my heavy days feel lighter.</p>
 
-If this is just the beginning, then I can’t wait to see how much more we’ll grow together. I choose you now and forever. ❤️
-"></div>
+          <p>Thank you for being patient with me, for understanding me, and for choosing me even when things aren’t perfect.</p>
+
+          <p>If this is just the beginning, then I can’t wait to see how much more we’ll grow together. I choose you now and forever. ❤️</p>
+        </div>
       </div>
     </div>
 
@@ -194,45 +193,24 @@ If this is just the beginning, then I can’t wait to see how much more we’ll 
 </div>
 
 <div id="hearts"></div>
-<div id="sparkles"></div>
 
 <script>
 const envelope = document.getElementById("envelope");
-const textBox = document.getElementById("text");
-const music = document.getElementById("music");
-
 let opened = false;
 
-["click", "touchstart"].forEach(e => {
-  envelope.addEventListener(e, () => {
-    if (opened) return;
-    opened = true;
+envelope.addEventListener("click", () => {
+  if (opened) return;
+  opened = true;
 
-    envelope.classList.add("open");
-    music.play().catch(()=>{});
-    setTimeout(typeText, 700);
-  });
+  envelope.classList.add("open");
+
+  // Fade envelope after opening
+  setTimeout(() => {
+    envelope.classList.add("fade");
+  }, 1600);
 });
 
-function typeText() {
-  const text = textBox.dataset.text.trim();
-  textBox.innerHTML = "";
-  textBox.classList.add("type");
-
-  let i = 0;
-  function type() {
-    if (i < text.length) {
-      textBox.innerHTML += text[i] === "\n" ? "<br><br>" : text[i];
-      i++;
-      setTimeout(type, 28);
-    } else {
-      textBox.classList.remove("type");
-    }
-  }
-  type();
-}
-
-/* HEARTS */
+/* Floating hearts */
 setInterval(() => {
   const h = document.createElement("span");
   h.innerHTML = "❤️";
@@ -241,15 +219,6 @@ setInterval(() => {
   document.getElementById("hearts").appendChild(h);
   setTimeout(() => h.remove(), 6000);
 }, 700);
-
-/* SPARKLES */
-setInterval(() => {
-  const s = document.createElement("span");
-  s.style.left = Math.random() * 100 + "vw";
-  s.style.top = Math.random() * 100 + "vh";
-  document.getElementById("sparkles").appendChild(s);
-  setTimeout(() => s.remove(), 2500);
-}, 300);
 </script>
 
 </body>
