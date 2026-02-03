@@ -44,7 +44,7 @@ body {
   position: absolute;
   inset: 0;
   background: #f4a7b9;
-  border-radius: 10px;
+  border-radius: 12px;
   z-index: 1;
 }
 
@@ -89,22 +89,26 @@ body {
 
 .card {
   width: 90%;
-  background: white;
-  padding: 22px;
-  border-radius: 12px;
-  box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+  background: linear-gradient(180deg, #fff0f5, #ffe3ec);
+  padding: 24px 22px;
+  border-radius: 14px;
+  border: 2px solid #f2a7ba;
+  box-shadow: 0 10px 25px rgba(231, 84, 128, 0.25);
 }
 
 .card h1 {
   text-align: center;
-  color: #e75480;
-  margin-bottom: 10px;
+  color: #d94a73;
+  margin-bottom: 14px;
+  font-size: 22px;
 }
 
 .card-body {
-  font-size: 14px;
-  line-height: 1.7;
+  font-size: 15px;
+  line-height: 1.8;
+  color: #6b2d3e;
   min-height: 260px;
+  word-wrap: break-word;
 }
 
 /* OPEN STATE */
@@ -119,7 +123,8 @@ body {
 
 /* CURSOR */
 .type::after {
-  content: "|";
+  content: " |";
+  color: #d94a73;
   animation: blink 1s infinite;
 }
 
@@ -152,6 +157,22 @@ body {
   to {
     transform: translateY(-120px) scale(1.5);
     opacity: 0;
+  }
+}
+
+/* MOBILE */
+@media (max-width: 480px) {
+  .card {
+    padding: 20px 18px;
+  }
+
+  .card-body {
+    font-size: 14.5px;
+    line-height: 1.85;
+  }
+
+  .card h1 {
+    font-size: 20px;
   }
 }
 </style>
